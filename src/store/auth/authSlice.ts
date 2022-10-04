@@ -1,6 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { useDispatch } from 'react-redux';
+import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit'
+import { store, RootState } from '../store';
 
-export interface CounterState {
+export interface TemaplateState {
     status: Status;
     uid: string | null;
     email: string | null;
@@ -10,8 +12,8 @@ export interface CounterState {
 
   }
   
-const initialState: CounterState = {
-    status: 'checking', // 'not-authenticated','authenticated'
+const initialState: TemaplateState = {
+    status: 'not-authenticated', // 'not-authenticated','authenticated'
     uid: null,
     email: null,
     displayName: null,
@@ -33,7 +35,7 @@ export const authSlice = createSlice({
 
     },
     checkingCredentials: ( state ) => {
-
+      state.status = 'checking'
     }
   }
 })
