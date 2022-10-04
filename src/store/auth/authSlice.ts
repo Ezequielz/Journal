@@ -7,7 +7,7 @@ export interface TemaplateState {
     uid: string | null;
     email: string | null;
     displayName: string | null;
-    photoUrl: string | null;
+    photoURL: string | null;
     errorMessage: string | null;
 
   }
@@ -17,7 +17,7 @@ const initialState: TemaplateState = {
     uid: null,
     email: null,
     displayName: null,
-    photoUrl: null,
+    photoURL: null,
     errorMessage: null,
 }
 
@@ -28,11 +28,21 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    login: ( state, action ) => {
-
+    login: ( state, { payload } ) => {
+      state.status= 'authenticated',
+      state.uid= payload.uid,
+      state.email= payload.email,
+      state.displayName= payload.displayName,
+      state.photoURL= payload.photoURL,
+      state.errorMessage= null
     },
-    logout: ( state, payload ) => {
-
+    logout: ( state, { payload } ) => {
+      state.status= 'not-authenticated',
+      state.uid= null,
+      state.email= null,
+      state.displayName= null,
+      state.photoURL= null,
+      state.errorMessage= payload.errorMessage
     },
     checkingCredentials: ( state ) => {
       state.status = 'checking'

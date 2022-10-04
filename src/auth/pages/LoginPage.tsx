@@ -1,4 +1,4 @@
-import { FormEvent } from 'react';
+import { FormEvent, useMemo } from 'react';
 
 import { Link as RouterLink } from 'react-router-dom'
 
@@ -8,16 +8,20 @@ import { Button, Grid, Link, TextField, Typography } from '@mui/material';
 import { AuthLayout } from '../layout/AuthLayout';
 import { useAppDispatch, useForm } from '../../hooks';
 import { checkingAuthentication, startGoogleSignIn } from '../../store/auth';
+import { useAppSelector } from '../../hooks';
 
 
 
 export const LoginPage = () => {
+  const { status } =  useAppSelector( state => state.auth )
   const dispatch = useAppDispatch();
 
   const { email , password, onInputChange } = useForm({
     email: 'ezequiel@google.com',
     password: '123456'
   });
+
+  const isAuthenticated = useMemo( () => status === 'checking' , [status] )
 
 
   const onSubmit = ( event:FormEvent<HTMLFormElement>) => {
@@ -63,13 +67,19 @@ export const LoginPage = () => {
 
           <Grid container spacing={ 2 } sx={{ mb:2 , mt: 2}}>
             <Grid item xs={12} sm={6}>
-              <Button type='submit' variant="contained" fullWidth>
+              <Button 
+                disabled={ isAuthenticated }
+                type='submit' 
+                variant="contained" 
+                fullWidth
+              >
                 Login
               </Button>
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <Button 
+                disabled={ isAuthenticated }
                 onClick={ onGoogleSingIn }
                 variant="contained" 
                 fullWidth
